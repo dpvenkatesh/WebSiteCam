@@ -1,0 +1,94 @@
+<!--
+	Este é um pequeno exemplo de como utilizar a WebAPI navigator.getUserMedia
+		integrando Webcam e SnapShots com as tags <video> e <canvas>
+
+
+	Copyright (C) 21/09/2015 Guilherme Haynes Howe
+
+	Este programa é software livre: você pode redistribuí-lo e / ou modificá-
+     -lo sob os termos da GNU General Public License como publicado pela
+     a Free Software Foundation versão 3 da licença.
+
+	Este programa é distribuído na esperança que possa ser útil,
+     mas SEM QUALQUER GARANTIA; mesmo sem a garantia implícita de
+     COMERCIALIZAÇÃO ou ADEQUAÇÃO A UM DETERMINADO FIM. veja a
+     Licença Pública Geral GNU para obter mais detalhes.
+
+     Você deve ter recebido uma cópia da Licença Pública Geral GNU
+     junto com este programa. Se não, veja http://www.gnu.org/licenses
+-->
+<!DOCTYPE html>
+<html lang="pt-BR">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>WebCam + HTML5 + JavaScript </title>
+		<link rel="stylesheet" href="">
+	</head>
+
+	<body>
+		<video id="video"></video>
+		<button id="snap">Snap</button>
+		<canvas id="canvas" width="640" height="480"></canvas>
+		<script>
+			//Evento de que quando a página está carregada ele executa esse código
+			window.addEventListener("DOMContentLoaded", function() {
+				/*
+				 * Aqui crio minhas instancias e configuraçoes
+				 *    canvas - objeto da tag canvas
+				 *    context - o contexto em que vou trabalhar a tag canvas
+				 *    video - objeto da tag video
+				 *    videoObj - tipo de "transmição' vai ser (Video, Audio...)
+				 *    errBack - Se algo der errado que me mostre o erro
+				 */
+				var canvas = document.getElementById("canvas"),
+					context = canvas.getContext("2d"),
+					video = document.getElementById("video"),
+					videoObj = { "video": true },
+					errBack = function(error) {
+						alert("Video capture error: ", error.code);
+					};
+
+				/*
+				 * Colocar os eventos na nossa "transmição" de video
+				 *    transmição = comunicação do hardware com o javascript
+				 *
+				 *    IMPORTANTE!!!!
+				 *       Para poder dar suporte ao IE8, IE9, IE10 e IE11 tem que usar Flash Player
+				 * 
+				 *    navigator.getUserMedia - função responsavel pela comunicação do hardware com o navegador.
+				 *        videoObj - Objeto de configuração criado no inicio do script / Pede a Permissão do usuario para poder utilizar a WebCam
+				 *        stream - objeto que vai retornar uma URL temporária para exibição na tag video
+				 *        video.src = stream - setando a url que disse acima
+				 *        video.play - dando play na transmição pois se não a mesma fica com o primeiro frame
+				 * 		  errBack - Se algo der errado que me mostre o erro
+				 */
+				if(navigator.getUserMedia) { // Outros navegadores
+					navigator.getUserMedia(videoObj, function(stream) {
+						video.src = stream;
+						video.play();
+					}, errBack);
+				} else if(navigator.webkitGetUserMedia) { // Google-chrome
+					navigator.webkitGetUserMedia(videoObj, function(stream){
+						video.src = window.webkitURL.createObjectURL(stream);
+						video.play();
+					}, errBack);
+				}
+				else if(navigator.mozGetUserMedia) { // Firefox
+					navigator.mozGetUserMedia(videoObj, function(stream){
+						video.src = window.URL.createObjectURL(stream);
+						video.play();
+					}, errBack);
+				}
+				
+				/*
+				 *   Evento de click do botão "snap"
+				 *      Pega o frame exibido na tela e o desenha no Canvas fazendo assim uma imagem .jpg
+				 */
+				document.getElementById("snap").addEventListener("click", function() {
+					context.drawImage(video, 0, 0, 640, 480);
+				});
+			}, false);
+		</script>
+	</body>
+</html>
