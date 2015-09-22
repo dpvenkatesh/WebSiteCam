@@ -1,20 +1,6 @@
 <!--
 	Este é um pequeno exemplo de como utilizar a WebAPI navigator.getUserMedia
 		integrando Webcam e SnapShots com as tags <video> e <canvas>
-
-	Copyright (C) 21/09/2015 Guilherme Haynes Howe
-
-	Este programa é software livre: você pode redistribuí-lo e / ou modificá-lo
-	 sob os termos da GNU General Public License como publicado pela
-     a Free Software Foundation versão 3 da licença.
-
-	Este programa é distribuído na esperança que possa ser útil,
-     mas SEM QUALQUER GARANTIA; mesmo sem a garantia implícita de
-     COMERCIALIZAÇÃO ou ADEQUAÇÃO A UM DETERMINADO FIM. veja a
-     Licença Pública Geral GNU para obter mais detalhes.
-
-     Você deve ter recebido uma cópia da Licença Pública Geral GNU
-     junto com este programa. Se não, veja http://www.gnu.org/licenses
 -->
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -22,13 +8,42 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>WebCam + HTML5 + JavaScript </title>
-		<link rel="stylesheet" href="">
+		
+		<!-- Bootstrap v3.3.5 -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		
+		<!-- Bootstrap Material Design  -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/material.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/css/roboto.min.css">
+		<style>
+			#snap{
+				margin-top: -670px;
+				padding-top: 16px;
+			}
+			#download{
+				margin-top: -150px;
+				padding-top: 16px;
+			}
+		</style>
 	</head>
-
 	<body>
-		<video id="video"></video>
-		<button id="snap">Snap</button>
-		<canvas id="canvas" width="640" height="480"></canvas>
+		<div class="container well" style="text-align: center;">
+			<div class="row">
+				<h1>WebSiteCam</h1>
+				<p>Um exemplo de usar a Camera do Computador ou celular no Web Browser</p>
+			</div>
+			<video id="video" width="480"></video>
+			<canvas id="canvas" width="480" height="360"></canvas>
+			<div class="buttons">
+				<button id="snap" class="btn btn-fab btn-raised btn-material-red"><i class="mdi-image-photo-camera"></i></button><br>
+				<button id="download" class="btn btn-fab btn-raised btn-material-red"><i class="mdi-file-file-download"></i></button><br>
+			</div>
+		</div>
+		
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/0.3.0/js/material.min.js"></script>
 		<script>
 			//Evento de que quando a página está carregada ele executa esse código
 			window.addEventListener("DOMContentLoaded", function() {
@@ -85,7 +100,10 @@
 				 *      Pega o frame exibido na tela e o desenha no Canvas fazendo assim uma imagem .jpg
 				 */
 				document.getElementById("snap").addEventListener("click", function() {
-					context.drawImage(video, 0, 0, 640, 480);
+					context.drawImage(video, 0, 0, 480, 360);
+				});
+				document.getElementById('download').addEventListener("click", function(){
+					window.open(canvas.toDataURL());
 				});
 			}, false);
 		</script>
