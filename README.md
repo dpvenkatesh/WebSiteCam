@@ -5,6 +5,7 @@ Uma pequena demonstração de como utilizar a WebAPI Interface
 ## License
 
 Copyright (C) 21/09/2015 Guilherme Haynes Howe
+
 Este programa é software livre: você pode redistribuí-lo e / ou modificá--lo
  sob os termos da GNU General Public License como publicado pela
  a Free Software Foundation versão 3 da licença.
